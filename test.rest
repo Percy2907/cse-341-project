@@ -1,0 +1,87 @@
+//LOCALHOST
+// Get All Data with localhost
+###
+GET http://localhost:3000/contacts HTTP/1.1
+
+// Get Single Data with localhost
+### 
+GET http://localhost:3000/contacts/6903f6f4623aaab6f76dd133 HTTP/1.1
+###
+GET http://localhost:3000/contacts/6903f7f6623aaab6f76dd134 HTTP/1.1
+###
+GET http://localhost:3000/contacts/6903f867623aaab6f76dd136 HTTP/1.1
+
+// Create a new Contact
+###
+POST http://localhost:3000/contacts HTTP/1.1
+Content-Type: application/json
+
+{
+  "firstName": "Utah",
+  "lastName": "Manrique",
+  "email": "utah.mj@gmail.com",
+  "favoriteColor": "purple",
+  "birthday": "March 15, 2004"
+}
+
+// Update contact by ID
+###
+PUT http://localhost:3000/contacts/6903f6f4623aaab6f76dd133 HTTP/1.1
+Content-Type: application/json
+
+{
+    "firstName": "Alex",
+    "lastName": "Smith",
+    "email": "alexsmith@test.com",
+    "favoriteColor": "Green",
+    "birthday": "10/23/1996"
+}
+
+// Delete a contact
+###
+DELETE http://localhost:3000/contacts/690bf952e631a231785e9407 HTTP/1.1
+
+
+
+//PRODUCTION WITH RENDER
+// Get all Data with deploy production
+###
+GET https://cse-341-project-bq0q.onrender.com/contacts HTTP/1.1
+
+/// Get Single data with deploy production
+###
+GET https://cse-341-project-bq0q.onrender.com/contacts/6903f6f4623aaab6f76dd133 HTTP/1.1
+###
+GET https://cse-341-project-bq0q.onrender.com/contacts/6903f7f6623aaab6f76dd134 HTTP/1.1
+###
+GET https://cse-341-project-bq0q.onrender.com/contacts/6903f867623aaab6f76dd136 HTTP/1.1
+
+// Create a new Contact with Render Link
+###
+POST https://cse-341-project-bq0q.onrender.com/contacts HTTP/1.1
+Content-Type: application/json
+
+{
+    "firstName": "Alex",
+    "lastName": "McKay",
+    "email": "alexmckay@test.com",
+    "favoriteColor": "Yellow",
+    "birthday": "10/25/1997"
+}
+
+// Update contact by ID with Render Link
+###
+PUT https://cse-341-project-bq0q.onrender.com/contacts/690bed8d132b6497f2233437 HTTP/1.1
+Content-Type: application/json
+
+{
+    "firstName": "Kevin",
+    "lastName": "Mckay",
+    "email": "kevinmckay@test.com",
+    "favoriteColor": "Sky Blue",
+    "birthday": "08/30/1997"
+}
+
+// Delete a contact with Render Link
+###
+DELETE https://cse-341-project-bq0q.onrender.com/contacts/690bf9e43659bb2f2c9a822c HTTP/1.1
