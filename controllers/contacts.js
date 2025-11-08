@@ -54,7 +54,7 @@ const updateContact = async (req, res) =>{
   };
   const result = await db
   .collection("contacts")
-  .updatedOne({ _id: contactId }, { $set: updateContact});
+  .updateOne({ _id: contactId }, { $set: updateContact});
   if (result.modifiedCount > 0) {
     res.setHeader("Content-Type", "application/json");
     res.status(200).json(result);
