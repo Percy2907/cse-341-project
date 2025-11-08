@@ -28,7 +28,7 @@ const createContact = async (req, res) =>{
   const db = getDatabase ();
   const newContact = { 
     firstName: req.body.firstName,
-    LastName: req.body.lastName,
+    lastName: req.body.lastName,
     email: req.body.email,
     favoriteColor: req.body.favoriteColor,
     birthday: req.body.birthday,
