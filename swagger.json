@@ -1,146 +1,189 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Contacts Api",
-    "description": "Contacts Api",
+    "title": "Contacts & Companies API",
+    "description": "CRUD API for contacts and companies",
     "version": "1.0.0"
   },
   "host": "cse-341-project-bq0q.onrender.com",
   "basePath": "/",
-  "schemes": [
-    "https"
-  ],
+  "schemes": ["http", "https"],
   "paths": {
     "/contacts/": {
       "get": {
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
+        "description": "Get all contacts",
+        "produces": ["application/json"],
         "responses": {
-          "200": {
-            "description": "OK"
-          }
+          "200": { "description": "OK" },
+          "500": { "description": "Server Error" }
         }
       },
       "post": {
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
+        "description": "Create a new contact",
+        "consumes": ["application/json"],
         "parameters": [
           {
-            "name": "body",
             "in": "body",
+            "name": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "firstName": {
-                  "example": "any"
-                },
-                "lastName": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "favoriteColor": {
-                  "example": "any"
-                },
-                "birthday": {
-                  "example": "any"
-                }
-              }
+                "firstName": { "example": "John" },
+                "lastName": { "example": "Doe" },
+                "email": { "example": "john@example.com" },
+                "favoriteColor": { "example": "Blue" },
+                "birthday": { "example": "1990-01-01" }
+              },
+              "required": ["firstName", "lastName", "email"]
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          }
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Server Error" }
         }
       }
     },
     "/contacts/{id}": {
       "get": {
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        "description": "Get a single contact by ID",
+        "produces": ["application/json"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
         "responses": {
-          "200": {
-            "description": "OK"
-          }
+          "200": { "description": "OK" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Server Error" }
         }
       },
       "put": {
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
+        "description": "Update a contact by ID",
+        "consumes": ["application/json"],
         "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" },
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
             "in": "body",
+            "name": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "firstName": {
-                  "example": "any"
-                },
-                "lastName": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "favoriteColor": {
-                  "example": "any"
-                },
-                "birthday": {
-                  "example": "any"
-                }
+                "firstName": { "example": "John" },
+                "lastName": { "example": "Doe" },
+                "email": { "example": "john@example.com" },
+                "favoriteColor": { "example": "Blue" },
+                "birthday": { "example": "1990-01-01" }
               }
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          }
+          "200": { "description": "Updated successfully" },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Server Error" }
         }
       },
       "delete": {
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
+        "description": "Delete a contact by ID",
+        "produces": ["application/json"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
+        "responses": {
+          "200": { "description": "Deleted successfully" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/companies/": {
+      "get": {
+        "description": "Get all companies",
+        "produces": ["application/json"],
+        "responses": {
+          "200": { "description": "OK" },
+          "500": { "description": "Server Error" }
+        }
+      },
+      "post": {
+        "description": "Create a new company",
+        "consumes": ["application/json"],
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
+            "in": "body",
+            "name": "body",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": { "example": "Acme Corp" },
+                "industry": { "example": "Technology" },
+                "email": { "example": "contact@acme.com" },
+                "phone": { "example": "+1-555-1234" },
+                "address": { "example": "123 Main St" },
+                "city": { "example": "Lima" },
+                "state": { "example": "Lima" }
+              },
+              "required": ["name", "industry", "email"]
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/companies/{id}": {
+      "get": {
+        "description": "Get a single company by ID",
+        "produces": ["application/json"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
+        "responses": {
+          "200": { "description": "OK" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Server Error" }
+        }
+      },
+      "put": {
+        "description": "Update a company by ID",
+        "consumes": ["application/json"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": { "example": "Acme Corp" },
+                "industry": { "example": "Technology" },
+                "email": { "example": "contact@acme.com" },
+                "phone": { "example": "+1-555-1234" },
+                "address": { "example": "123 Main St" },
+                "city": { "example": "Lima" },
+                "state": { "example": "Lima" }
+              }
+            }
           }
+        ],
+        "responses": {
+          "200": { "description": "Updated successfully" },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Server Error" }
+        }
+      },
+      "delete": {
+        "description": "Delete a company by ID",
+        "produces": ["application/json"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
+        "responses": {
+          "200": { "description": "Deleted successfully" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Server Error" }
         }
       }
     }

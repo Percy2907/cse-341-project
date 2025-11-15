@@ -1,77 +1,85 @@
 const { getDatabase } = require("../data/database");
 const { ObjectId } = require("mongodb");
 
-//Get all contacts
+// Get all contacts
 const getAll = async (req, res) => {
-  const db = getDatabase();
-  const result = await db.collection("contacts").find();
-  result.toArray().then((contacts) => {
-    res.setHeader("Content-Type", "application/json");
+  try {
+    const db = getDatabase();
+    const contacts = await db.collection("contacts").find().toArray();
     res.status(200).json(contacts);
-  });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
-//Get one single contact
+// Get single contact
 const getSingle = async (req, res) => {
-  const db = getDatabase();
-  const contactId = new ObjectId(req.params.id);
-  const result = await db.collection("contacts").findOne({ _id: contactId });
-  if (result) {
-    res.setHeader("Content-Type", "application/json");
-    res.status(200).json(result);
+  try {
+    const db = getDatabase();
+    const contactId = new ObjectId(req.params.id);
+    const contact = await db.collection("contacts").findOne({ _id: contactId });
+    if (!contact) return res.status(404).json({ error: "Not found" });
+    res.status(200).json(contact);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 
-// create a New Contact
+// Create new contact
+const createContact = async (req, res) => {
+  try {
+    const db = getDatabase();
+    const { firstName, lastName, email, favoriteColor, birthday } = req.body;
 
-const createContact = async (req, res) =>{
-  const db = getDatabase ();
-  const newContact = { 
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    favoriteColor: req.body.favoriteColor,
-    birthday: req.body.birthday,
-  };
-  const result = await db.collection("contacts").insertOne(newContact);
-  if (result.acknowledged) {
-    res.setHeader("Content-Type", "application/json");
-    res.status(200).json(result)
+    if (!firstName || !lastName || !email)
+      return res.status(400).json({ error: "Missing required fields" });
 
+    const result = await db.collection("contacts").insertOne({
+      firstName,
+      lastName,
+      email,
+      favoriteColor,
+      birthday,
+    });
+
+    res.status(201).json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 
-// Update a contact
-const updateContact = async (req, res) =>{
-  const db = getDatabase ();
-  const contactId = new ObjectId(req.params.id);
-  const updateContact = {
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    favoriteColor: req.body.favoriteColor,
-    birthday: req.body.birthday,
-  };
-  const result = await db
-  .collection("contacts")
-  .updateOne({ _id: contactId }, { $set: updateContact});
-  if (result.modifiedCount > 0) {
-    res.setHeader("Content-Type", "application/json");
+// Update contact
+const updateContact = async (req, res) => {
+  try {
+    const db = getDatabase();
+    const contactId = new ObjectId(req.params.id);
+    const { firstName, lastName, email, favoriteColor, birthday } = req.body;
+
+    if (!firstName || !lastName || !email)
+      return res.status(400).json({ error: "Missing required fields" });
+
+    const result = await db
+      .collection("contacts")
+      .updateOne({ _id: contactId }, { $set: { firstName, lastName, email, favoriteColor, birthday } });
+
+    if (result.matchedCount === 0) return res.status(404).json({ error: "Not found" });
+
     res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 
-// Delete a contact
-const deleteContact = async (req, res) =>{
-  const db = getDatabase ();
-  const contactId = new ObjectId(req.params.id);
-
-  const result = await db
-  .collection("contacts")
-  .deleteOne({ _id: contactId });
-  if (result.deletedCount > 0) {
-    res.setHeader("Content-Type", "application/json");
+// Delete contact
+const deleteContact = async (req, res) => {
+  try {
+    const db = getDatabase();
+    const contactId = new ObjectId(req.params.id);
+    const result = await db.collection("contacts").deleteOne({ _id: contactId });
+    if (result.deletedCount === 0) return res.status(404).json({ error: "Not found" });
     res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 
